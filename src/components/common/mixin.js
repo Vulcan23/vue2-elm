@@ -36,7 +36,6 @@ export const loadMore = {
         el.addEventListener(
           "touchstart",
           () => {
-            height = heightEl.clientHeight;
             setTop = el.offsetTop;
             paddingBottom = getStyle(el, "paddingBottom");
             marginBottom = getStyle(el, "marginBottom");
@@ -67,14 +66,13 @@ export const loadMore = {
               oldScrollTop = scrollEl.scrollTop;
               moveEnd();
             } else {
-              cancelAnimationFrame(requestFram);
-              height = heightEl.clientHeight;
               loadMore();
             }
           });
         };
 
         const loadMore = () => {
+          height = heightEl.clientHeight;
           if (
             scrollEl.scrollTop + windowHeight >=
             height + setTop + paddingBottom + marginBottom - scrollReduce
