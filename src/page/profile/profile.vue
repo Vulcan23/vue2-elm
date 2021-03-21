@@ -194,7 +194,7 @@
 <script>
 import headTop from "src/components/header/head";
 import footGuide from "src/components/footer/footGuide";
-import { mapState, mapMutations } from "vuex";
+import { mapState } from "vuex";
 import { imgBaseUrl } from "src/config/env";
 
 export default {
@@ -224,7 +224,6 @@ export default {
   },
 
   methods: {
-    ...mapMutations(["SAVE_AVANDER"]),
     initData() {
       if (this.userInfo && this.userInfo.user_id) {
         this.avatar = this.userInfo.avatar;
