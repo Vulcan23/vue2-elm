@@ -196,7 +196,6 @@ import headTop from "src/components/header/head";
 import footGuide from "src/components/footer/footGuide";
 import { mapState, mapMutations } from "vuex";
 import { imgBaseUrl } from "src/config/env";
-import { getImgPath } from "src/components/common/mixin";
 
 export default {
   data() {
@@ -215,7 +214,6 @@ export default {
   mounted() {
     this.initData();
   },
-  mixins: [getImgPath],
   components: {
     headTop,
     footGuide,
@@ -223,17 +221,6 @@ export default {
 
   computed: {
     ...mapState(["userInfo"]),
-    //后台会返回两种头像地址格式，分别处理
-    imgpath: function () {
-      let path;
-      if (this.avatar.indexOf("/") !== -1) {
-        path = imgBaseUrl + this.avatar;
-      } else {
-        path = this.getImgPath(this.avatar);
-      }
-      this.SAVE_AVANDER(path);
-      return path;
-    },
   },
 
   methods: {

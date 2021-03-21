@@ -30,7 +30,6 @@
 
 <script>
 import headTop from "src/components/header/head";
-import { getImgPath } from "src/components/common/mixin";
 import { searchNearby } from "src/service/getData";
 import { mapMutations, mapState } from "vuex";
 export default {
@@ -57,7 +56,6 @@ export default {
     // 	}
     // });
   },
-  mixins: [getImgPath],
   components: {
     headTop,
   },

@@ -26,7 +26,6 @@
 
 <script>
 import headTop from "src/components/header/head";
-import { getImgPath } from "src/components/common/mixin";
 import { mapMutations, mapState } from "vuex";
 export default {
   data() {
@@ -39,7 +38,6 @@ export default {
     };
   },
   created() {},
-  mixins: [getImgPath],
   components: {
     headTop,
   },

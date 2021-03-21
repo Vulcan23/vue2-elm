@@ -40,7 +40,6 @@
 
 <script>
 import headTop from "src/components/header/head";
-import { getImgPath } from "src/components/common/mixin";
 import { mapState, mapActions } from "vuex";
 import { getAddressList, deleteAddress } from "src/service/getData";
 
@@ -55,7 +54,6 @@ export default {
   mounted() {
     this.initData();
   },
-  mixins: [getImgPath],
   mounted() {},
   components: {
     headTop,
