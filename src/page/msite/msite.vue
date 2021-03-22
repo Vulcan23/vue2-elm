@@ -95,6 +95,7 @@ export default {
       foodTypes: [], // 食品分类列表
       hasGetData: false, //是否已经获取地理位置数据，成功之后再获取商铺列表信息
       imgBaseUrl: "https://fuss10.elemecdn.com", //图片域名地址
+      first: true,
     };
   },
   async beforeMount() {
@@ -132,7 +133,37 @@ export default {
           pagination: ".swiper-pagination",
           loop: true,
         });
+        this.first = false;
       });
+  },
+  async activated() {
+    if (!this.first) {
+      if (!this.$route.query.geohash) {
+        const address = await cityGuess();
+        this.geohash = address.latitude + "," + address.longitude;
+      } else {
+        this.geohash = this.$route.query.geohash;
+      }
+      //保存geohash 到vuex
+      this.SAVE_GEOHASH(this.geohash);
+      //获取位置信息
+      let res = await msiteAddress(this.geohash);
+      this.msiteTitle = res.name;
+      // 记录当前经度纬度
+      this.RECORD_ADDRESS(res);
+
+      this.hasGetData = true;
+
+      res = await msiteFoodTypes(this.geohash);
+
+      let resLength = res.length;
+      let resArr = [...res]; // 返回一个新的数组
+      let foodArr = [];
+      for (let i = 0, j = 0; i < resLength; i += 8, j++) {
+        foodArr[j] = resArr.splice(0, 8);
+      }
+      this.foodTypes = foodArr;
+    }
   },
   components: {
     headTop,
