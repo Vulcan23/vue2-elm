@@ -365,8 +365,10 @@ export default {
   computed: {
     ...mapState(["latitude", "longitude"]),
     categoryDetailSection() {
-      return this.categoryDetail.slice(1);
-    }
+      if (this.categoryDetail) {
+        return this.categoryDetail.slice(1);
+      }
+    },
   },
   methods: {
     ...mapMutations(["RECORD_ADDRESS"]),
