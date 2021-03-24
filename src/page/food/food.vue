@@ -68,8 +68,7 @@
             <section class="category_right">
               <ul>
                 <li
-                  v-for="(item, index) in categoryDetail"
-                  v-if="index"
+                  v-for="(item, index) in categoryDetailSection"
                   :key="index"
                   class="category_right_li"
                   @click="getCategoryIds(item.id, item.name)"
@@ -365,6 +364,9 @@ export default {
   },
   computed: {
     ...mapState(["latitude", "longitude"]),
+    categoryDetailSection() {
+      return this.categoryDetail.slice(1);
+    }
   },
   methods: {
     ...mapMutations(["RECORD_ADDRESS"]),
