@@ -44,7 +44,9 @@
                     <span>{{ item.name }}</span>
                   </section>
                   <section>
-                    <span class="category_count">{{ item.count }}</span>
+                    <span class="category_count">{{
+                      categoryCount(index)
+                    }}</span>
                     <svg
                       width="8"
                       height="8"
@@ -427,15 +429,8 @@ export default {
     },
     //选中Category左侧列表的某个选项时，右侧渲染相应的sub_categories列表
     selectCategoryName(id, index) {
-      //第一个选项 -- 全部商家 因为没有自己的列表，所以点击则默认获取选所有数据
-      if (index === 0) {
-        this.restaurant_category_ids = null;
-        this.sortBy = "";
-        //不是第一个选项时，右侧展示其子级sub_categories的列表
-      } else {
-        this.restaurant_category_id = id;
-        this.categoryDetail = this.category[index].sub_categories;
-      }
+      this.restaurant_category_id = id;
+      this.categoryDetail = this.category[index].sub_categories;
     },
     //选中Category右侧列表的某个选项时，进行筛选，重新获取数据并渲染
     getCategoryIds(id, name) {
@@ -497,6 +492,17 @@ export default {
       //状态改变时，因为子组件进行了监听，会重新获取数据进行筛选
       this.confirmStatus = !this.confirmStatus;
       this.sortBy = "";
+    },
+    categoryCount(index) {
+      if (this.category[index].name === "异国料理") {
+        return this.category[index].sub_categories
+          .slice(1)
+          .reduce(
+            (accumulator, currentValue) => accumulator + currentValue.count,
+            0
+          );
+      }
+      return this.category[index].count;
     },
   },
 };
