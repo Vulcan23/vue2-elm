@@ -39,7 +39,6 @@
                   <section>
                     <img
                       :src="getImgPath(item.image_url)"
-                      v-if="index"
                       class="category_icon"
                     />
                     <span>{{ item.name }}</span>
@@ -47,7 +46,6 @@
                   <section>
                     <span class="category_count">{{ item.count }}</span>
                     <svg
-                      v-if="index"
                       width="8"
                       height="8"
                       xmlns="http://www.w3.org/2000/svg"
