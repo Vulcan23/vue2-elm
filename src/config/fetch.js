@@ -36,6 +36,15 @@ export default async (url = "", data = {}, type = "GET", method = "fetch") => {
 
     try {
       const response = await fetch(url, requestConfig);
+      if (/\/v1\/cities/.test(url) && data.type === "guess") {
+        if (response.status === 504) {
+          console.log("定位失败");
+          return {
+            name: "定位失败",
+            id: null,
+          };
+        }
+      }
       const responseJson = await response.json();
       return responseJson;
     } catch (error) {
