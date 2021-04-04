@@ -387,15 +387,11 @@ export default {
         this.RECORD_ADDRESS(res);
       }
       //获取category分类左侧数据
-      this.category = await foodCategory(this.latitude, this.longitude);
+      this.category = (await foodCategory(this.latitude, this.longitude)).filter(val => val.name !== "全部商家");
       //初始化时定位当前category分类左侧默认选择项，在右侧展示出其sub_categories列表
       this.category.forEach((item, index) => {
         if (this.restaurant_category_id == item.id) {
           this.categoryDetail = item.sub_categories;
-        }
-        // 剔除“全部商家”，因为他没有相应的列表
-        if (item.name === "全部商家") {
-          this.category.splice(index, 1);
         }
       });
       //获取筛选列表的配送方式
