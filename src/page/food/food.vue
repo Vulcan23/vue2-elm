@@ -104,102 +104,22 @@
         </div>
         <transition name="showlist">
           <section v-show="sortBy == 'sort'" class="sort_detail_type">
-            <ul class="sort_list_container" @click="sortList($event)">
-              <li class="sort_list_li">
+            <ul class="sort_list_container">
+              <li
+                class="sort_list_li"
+                v-for="item in sortListData"
+                :key="item.data"
+                @click="sortList(item.data)"
+              >
                 <svg>
                   <use
                     xmlns:xlink="http://www.w3.org/1999/xlink"
-                    xlink:href="#default"
+                    :xlink:href="item.icon"
                   ></use>
                 </svg>
-                <p data="0" :class="{ sort_select: sortByType == 0 }">
-                  <span>智能排序</span>
-                  <svg v-if="sortByType == 0">
-                    <use
-                      xmlns:xlink="http://www.w3.org/1999/xlink"
-                      xlink:href="#selected"
-                    ></use>
-                  </svg>
-                </p>
-              </li>
-              <li class="sort_list_li">
-                <svg>
-                  <use
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    xlink:href="#distance"
-                  ></use>
-                </svg>
-                <p data="5" :class="{ sort_select: sortByType == 5 }">
-                  <span>距离最近</span>
-                  <svg v-if="sortByType == 5">
-                    <use
-                      xmlns:xlink="http://www.w3.org/1999/xlink"
-                      xlink:href="#selected"
-                    ></use>
-                  </svg>
-                </p>
-              </li>
-              <li class="sort_list_li">
-                <svg>
-                  <use
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    xlink:href="#hot"
-                  ></use>
-                </svg>
-                <p data="6" :class="{ sort_select: sortByType == 6 }">
-                  <span>销量最高</span>
-                  <svg v-if="sortByType == 6">
-                    <use
-                      xmlns:xlink="http://www.w3.org/1999/xlink"
-                      xlink:href="#selected"
-                    ></use>
-                  </svg>
-                </p>
-              </li>
-              <li class="sort_list_li">
-                <svg>
-                  <use
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    xlink:href="#price"
-                  ></use>
-                </svg>
-                <p data="1" :class="{ sort_select: sortByType == 1 }">
-                  <span>起送价最低</span>
-                  <svg v-if="sortByType == 1">
-                    <use
-                      xmlns:xlink="http://www.w3.org/1999/xlink"
-                      xlink:href="#selected"
-                    ></use>
-                  </svg>
-                </p>
-              </li>
-              <li class="sort_list_li">
-                <svg>
-                  <use
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    xlink:href="#speed"
-                  ></use>
-                </svg>
-                <p data="2" :class="{ sort_select: sortByType == 2 }">
-                  <span>配送速度最快</span>
-                  <svg v-if="sortByType == 2">
-                    <use
-                      xmlns:xlink="http://www.w3.org/1999/xlink"
-                      xlink:href="#selected"
-                    ></use>
-                  </svg>
-                </p>
-              </li>
-              <li class="sort_list_li">
-                <svg>
-                  <use
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    xlink:href="#rating"
-                  ></use>
-                </svg>
-                <p data="3" :class="{ sort_select: sortByType == 3 }">
-                  <span>评分最高</span>
-                  <svg v-if="sortByType == 3">
+                <p :class="{ sort_select: sortByType == item.data }">
+                  <span>{{ item.name }}</span>
+                  <svg v-if="sortByType == item.data">
                     <use
                       xmlns:xlink="http://www.w3.org/1999/xlink"
                       xlink:href="#selected"
@@ -352,6 +272,38 @@ export default {
       support_ids: [], // 选中的商铺活动列表
       filterNum: 0, // 所选中的所有样式的集合
       confirmStatus: false, // 确认选择
+      sortListData: [
+        {
+          name: "智能排序",
+          data: "0",
+          icon: "#default",
+        },
+        {
+          name: "距离最近",
+          data: "5",
+          icon: "#distance",
+        },
+        {
+          name: "销量最高",
+          data: "6",
+          icon: "#hot",
+        },
+        {
+          name: "起送价最低",
+          data: "1",
+          icon: "#price",
+        },
+        {
+          name: "配送速度最快",
+          data: "2",
+          icon: "#speed",
+        },
+        {
+          name: "评分最高",
+          data: "3",
+          icon: "#rating",
+        },
+      ],
     };
   },
   created() {
@@ -387,7 +339,9 @@ export default {
         this.RECORD_ADDRESS(res);
       }
       //获取category分类左侧数据
-      this.category = (await foodCategory(this.latitude, this.longitude)).filter(val => val.name !== "全部商家");
+      this.category = (
+        await foodCategory(this.latitude, this.longitude)
+      ).filter((val) => val.name !== "全部商家");
       //初始化时定位当前category分类左侧默认选择项，在右侧展示出其sub_categories列表
       this.category.forEach((item, index) => {
         if (this.restaurant_category_id == item.id) {
@@ -436,15 +390,8 @@ export default {
       this.foodTitle = this.headTitle = name;
     },
     //点击某个排序方式，获取事件对象的data值，并根据获取的值重新获取数据渲染
-    sortList(event) {
-      let node;
-      // 如果点击的是 span 中的文字，则需要获取到 span 的父标签 p
-      if (event.target.nodeName.toUpperCase() !== "P") {
-        node = event.target.parentNode;
-      } else {
-        node = event.target;
-      }
-      this.sortByType = node.getAttribute("data");
+    sortList(data) {
+      this.sortByType = data;
       this.sortBy = "";
     },
     //筛选选项中的配送方式选择
