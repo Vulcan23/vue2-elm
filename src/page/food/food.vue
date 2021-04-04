@@ -20,7 +20,7 @@
             </svg>
           </div>
         </div>
-        <transition name="showlist" v-show="category">
+        <transition name="showlist">
           <section
             v-show="sortBy == 'food'"
             class="category_container sort_detail_type"
