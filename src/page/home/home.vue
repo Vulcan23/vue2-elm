@@ -64,6 +64,13 @@ import headTop from "../../components/header/head";
 import { cityGuess, hotcity, groupcity } from "../../service/getData";
 
 export default {
+  beforeRouteLeave(to, from, next) {
+    if (to.params.cityid === "null") {
+      next(false);
+    } else {
+      next();
+    }
+  },
   data() {
     return {
       guessCity: "", //当前城市
